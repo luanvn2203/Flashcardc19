@@ -113,9 +113,9 @@ const SignInScreen = ({ navigation }) => {
                 accessToken: response.tokens,
                 refreshToken: response.refreshToken,
                 expirationTime: response.expirationTime
-            }))
+            }));
+            navigation.navigate("Home");
             // navigate here
-
         } else {
             Alert.alert('Notification', `${response.Message}`, [
                 { text: 'Try again' }
@@ -239,6 +239,21 @@ const SignInScreen = ({ navigation }) => {
                         <Text style={[styles.textSign, {
                             color: '#009387'
                         }]}>Sign In</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        // onPress={() => { loginHandle(data.username, data.password) }}
+                        // disabled={!data.emailOK && !data.passwordOK}
+                        onPress={() => navigation.navigate("Register")}
+                        style={[styles.signIn, {
+                            borderColor: '#009387',
+                            borderWidth: 1,
+                            marginTop: 15
+                        }]}
+                    >
+                        <Text style={[styles.textSign, {
+                            color: '#009387'
+                        }]}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
