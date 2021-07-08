@@ -4,18 +4,18 @@ const initialState = {
     expirationTime: null
 };
 
-function booksReducer(state = initialState, action) {
+function authReducer(state = initialState, action) {
     switch (action.type) {
         case 'SAVE_ACCESS_TOKEN':
             return {
                 ...state,
                 accessToken: action.payload.accessToken,
                 refreshToken: action.payload.refreshToken,
-                expirationTime: action.payload.expiredTime,
+                expirationTime: action.payload.expirationTime,
             };
         default:
             return state;
     }
 }
 
-export default booksReducer;
+export default authReducer;

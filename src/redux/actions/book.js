@@ -1,7 +1,7 @@
 import { GET_BOOKS } from '../actions/auth';
 
 const initialState = {
-    books: [],
+    books: [1, 2, 3],
     bookmarks: []
 };
 
