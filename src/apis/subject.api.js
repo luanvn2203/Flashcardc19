@@ -1,11 +1,11 @@
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://localhost:9191/subject";
+const baseUrl = "http://192.168.1.19:9191/subject";
 
 const subjectAPI = {
-	getInterestSubject: (params) => {
+	getInterestSubject: (params, token) => {
 		const url = baseUrl + "/for-home-interest";
-		const token = localStorage.getItem("accessToken");
+		console.log(params)
 		return axiosClient.post(
 			url,
 			{ params },

@@ -5,16 +5,19 @@ import thunk from 'redux-thunk';
 
 import booksReducer from '../reducers/bookReducer';
 import authReducer from '../reducers/authReducer';
-
+import subjectReducer from '../reducers/subject';
+import lessionReducer from '../reducers/lession'
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['accessToken'] //user sau nay
+    whitelist: ['accessToken', 'currentUser'] //user sau nay
 };
 
 const rootReducer = combineReducers({
     booksReducer: persistReducer(persistConfig, booksReducer),
     authReducer: persistReducer(persistConfig, authReducer),
+    subjectReducer: persistReducer(persistConfig, subjectReducer),
+    lessionReducer: persistReducer(persistConfig, lessionReducer)
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

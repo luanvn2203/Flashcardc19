@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://localhost:9191/lession";
+const baseUrl = "http://192.168.1.19:9191/lession";
 
 const lessionAPI = {
 	getLessionBySubId: (params) => {
@@ -17,9 +17,8 @@ const lessionAPI = {
 		);
 	},
 
-	getPublicLessionBySubId: (params) => {
+	getPublicLessionBySubId: (params, token) => {
 		const url = baseUrl + "/public-lession-by-subjectid";
-		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
 			{ params },

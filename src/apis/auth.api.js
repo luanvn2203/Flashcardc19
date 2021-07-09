@@ -1,6 +1,7 @@
+import { useSelector } from "react-redux";
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://192.168.0.102:9195/account";
+const baseUrl = 'http://192.168.1.19:9195/account';
 
 const authAPI = {
 	login: (params) => {
@@ -8,9 +9,8 @@ const authAPI = {
 		return axiosClient.post(url, { params });
 	},
 
-	getMe: () => {
+	getMe: (token) => {
 		const url = baseUrl + "/me";
-		const token = localStorage.getItem("accessToken");
 		return axiosClient.get(url, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -18,9 +18,9 @@ const authAPI = {
 		});
 	},
 
-	logout: () => {
+	logout: (token) => {
 		const url = baseUrl + "/logout";
-		const token = localStorage.getItem("accessToken");
+		// const token = localStorage.getItem("accessToken");
 		return axiosClient.delete(url, {
 			headers: {
 				Authorization: `Bearer ${token}`,

@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from 'react-native-paper';
 
 import authAPI from '../../apis/auth.api'
-import { saveAccessToken } from '../../redux/actions/auth'
+import { changeLoadingState, saveAccessToken } from '../../redux/actions/auth'
 
 import { useDispatch, useSelector } from 'react-redux';
 // import { AuthContext } from '../components/context';
@@ -26,8 +26,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const SignInScreen = ({ navigation }) => {
     const dispatch = useDispatch()
+    const { isLoading } = useSelector(state => state.authReducer);
 
-    const { accessToken } = useSelector(state => state.authReducer);
 
     const [data, setData] = React.useState({
         username: '',
@@ -105,18 +105,23 @@ const SignInScreen = ({ navigation }) => {
     }
 
     const loginHandle = async (email, password) => {
+        dispatch(changeLoadingState(true))
         console.log(email, password)
         const response = await authAPI.login({ email: email, password: password })
-        console.log(response)
         if (response.status === "Success") {
+
             dispatch(saveAccessToken({
                 accessToken: response.tokens,
                 refreshToken: response.refreshToken,
-                expirationTime: response.expirationTime
+                expirationTime: response.expirationTime,
             }));
-            navigation.navigate("Home");
+            setTimeout(() => {
+                dispatch(changeLoadingState(false))
+                navigation.navigate("Home");
+            }, 1000);
             // navigate here
         } else {
+            dispatch(changeLoadingState(false))
             Alert.alert('Notification', `${response.Message}`, [
                 { text: 'Try again' }
             ]);
@@ -124,8 +129,6 @@ const SignInScreen = ({ navigation }) => {
 
     }
 
-
-    console.log(accessToken)
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#009387' barStyle="light-content" />

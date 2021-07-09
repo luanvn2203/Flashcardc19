@@ -1,21 +1,153 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Platform,
     StyleSheet, Text, View
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Button from '@ant-design/react-native/lib/button';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import LogoutButton from '../../components/LogoutButton';
+import authAPI from '../../apis/auth.api'
+import LearningScreen from './LearningScreen/index'
 
+import { useDispatch, useSelector } from 'react-redux';
+import { changeLoadingState, saveAccessToken, saveSignedInUser } from '../../redux/actions/auth';
 
-// import { AuthContext } from '../components/context';
-
-// import Users from '../model/users';
 
 const HomeScreen = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const { accessToken } = useSelector(state => state.authReducer);
+    const { currentUser } = useSelector(state => state.authReducer);
 
+    const getMyInfor = async () => {
+        const myInfo = await authAPI.getMe(accessToken);
+        dispatch(saveSignedInUser(myInfo.account))
+    }
+    useEffect(() => {
+        getMyInfor();
+    }, [])
+    const handleLogoutClick = async () => {
+        // dispatch(changeLoadingState(true))
+
+        authAPI.logout(accessToken).then(res => {
+            dispatch(saveAccessToken({
+                accessToken: null,
+                refreshToken: null,
+                expirationTime: null,
+                currentUser: null
+            }));
+            setTimeout(() => {
+                dispatch(changeLoadingState(false))
+                navigation.navigate("SignIn");
+            }, 1000);
+        }).catch(err => {
+            dispatch(saveAccessToken({
+                accessToken: null,
+                refreshToken: null,
+                expirationTime: null,
+                currentUser: null
+            }));
+            setTimeout(() => {
+                dispatch(changeLoadingState(false))
+                navigation.navigate("SignIn");
+            }, 1000);
+        })
+
+
+
+    }
+
+    function SettingsScreen({ navigation }) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Settings screen</Text>
+                {/* <Button
+                    title="Go to Details"
+                    onPress={() => navigation.navigate('Details')}
+                /> */}
+                <LogoutButton handleLogoutClick={handleLogoutClick} />
+
+            </View>
+        );
+    }
+    function SearchScreen({ navigation }) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Search screen</Text>
+                {/* <Button
+                    title="Go to Details"
+                    onPress={() => navigation.navigate('Details')}
+                /> */}
+                <LogoutButton handleLogoutClick={handleLogoutClick} />
+
+            </View>
+        );
+    }
+    function LearningProcessScreen({ navigation }) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>LearningProcess</Text>
+            </View>
+        );
+    }
+    const Tab = createBottomTabNavigator();
     return (
-        <View style={styles.container}>
-            <Text>HOME </Text>
-        </View>
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    if (route.name === 'Learning') {
+                        return (
+                            <Ionicons
+                                name={
+                                    focused
+                                        ? 'code'
+                                        : 'code'
+                                }
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    } else if (route.name === 'Settings') {
+                        return (
+                            <Ionicons
+                                name={focused ? 'settings' : 'settings'}
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    } else if (route.name === 'Process') {
+                        return (
+                            <Ionicons
+                                name={focused ? 'play-forward-outline' : 'play-forward-outline'}
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    } else if (route.name === 'Search') {
+                        return (
+                            <Ionicons
+                                name={focused ? 'search' : 'search'}
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    }
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+            }}
+        >
+            <Tab.Screen name="Learning" component={LearningScreen} />
+            <Tab.Screen name="Search" component={SearchScreen} />
+            <Tab.Screen name="Process" component={LearningProcessScreen} />
+            <Tab.Screen name="Settings" component={SettingsScreen} />
+        </Tab.Navigator>
+
     );
 };
 
@@ -24,7 +156,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#009387'
+        backgroundColor: '#3b4c9b'
     },
     header: {
         flex: 1,
