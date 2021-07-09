@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://localhost:9191/topic";
+const baseUrl = "http://192.168.1.72:9191/topic";
 
 const topicAPI = {
 	getAllTopic: () => {
