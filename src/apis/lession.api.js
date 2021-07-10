@@ -1,10 +1,10 @@
 import axiosClient from "./axiosClient";
+import { baseUrl } from '../../config'
 
-const baseUrl = "http://192.168.1.72:9191/lession";
 
 const lessionAPI = {
 	getLessionBySubId: (params) => {
-		const url = baseUrl + "/get-lession-by-subjectId";
+		const url = baseUrl.lessionBase + "/get-lession-by-subjectId";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -18,7 +18,7 @@ const lessionAPI = {
 	},
 
 	getPublicLessionBySubId: (params, token) => {
-		const url = baseUrl + "/public-lession-by-subjectid";
+		const url = baseUrl.lessionBase + "/public-lession-by-subjectid";
 		return axiosClient.post(
 			url,
 			{ params },
@@ -31,7 +31,7 @@ const lessionAPI = {
 	},
 
 	getLessionByMe: () => {
-		const url = baseUrl + "/get-lession-by-me";
+		const url = baseUrl.lessionBase + "/get-lession-by-me";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.get(url, {
 			headers: {
@@ -41,7 +41,7 @@ const lessionAPI = {
 	},
 
 	createLessionBySubId: (params) => {
-		const url = baseUrl + "/create-lession-by-subjectid";
+		const url = baseUrl.lessionBase + "/create-lession-by-subjectid";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -55,7 +55,7 @@ const lessionAPI = {
 	},
 
 	updateLessionById: (params) => {
-		const url = baseUrl + "/update-lession-by-id";
+		const url = baseUrl.lessionBase + "/update-lession-by-id";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.put(
 			url,
@@ -69,7 +69,7 @@ const lessionAPI = {
 	},
 
 	getLessionByAccountId: (params) => {
-		const url = baseUrl + "/get-lession-by-accountid";
+		const url = baseUrl.lessionBase + "/get-lession-by-accountid";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -83,7 +83,7 @@ const lessionAPI = {
 	},
 
 	getLessionByLessionId: (params) => {
-		const url = baseUrl + "/get-lession-by-lessionid";
+		const url = baseUrl.lessionBase + "/get-lession-by-lessionid";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -97,7 +97,7 @@ const lessionAPI = {
 	},
 
 	getAllLession: (params) => {
-		const url = baseUrl + "/get-all-lession";
+		const url = baseUrl.lessionBase + "/get-all-lession";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -111,7 +111,7 @@ const lessionAPI = {
 	},
 
 	removeLessionById: (params) => {
-		const url = baseUrl + "/delete";
+		const url = baseUrl.lessionBase + "/delete";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,

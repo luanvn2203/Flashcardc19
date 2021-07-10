@@ -12,11 +12,8 @@ function TestComponent(props) {
     const { accessToken } = useSelector(state => state.authReducer);
 
     const dispatch = useDispatch()
-    console.log("load", books);
-    console.log("load", bookmarks);
 
     const handleButtonClick = () => {
-        console.log("click", books);
         dispatch({
             type: 'SET_BOOKS',
             payload: {

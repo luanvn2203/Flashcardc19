@@ -33,7 +33,6 @@ const QuestionScreen = ({ navigation }) => {
         }, accessToken)
         if (response.status === "Success") {
             setListQuestionFound(response.data)
-            console.log(response.data)
         } else {
             setResMessage(response.message)
         }

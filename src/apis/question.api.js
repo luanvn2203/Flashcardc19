@@ -1,10 +1,9 @@
 import axiosClient from "./axiosClient";
-
-const baseUrl = "http://192.168.1.19:9191/question";
+import { baseUrl } from '../../config'
 
 const questionAPI = {
 	addQuestionOption: (params) => {
-		const url = baseUrl + "/add-question-opt";
+		const url = baseUrl.questionBase + "/add-question-opt";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -18,7 +17,7 @@ const questionAPI = {
 	},
 
 	getQuestionByFlashcardId: (params, token) => {
-		const url = baseUrl + "/get-questions-by-flashcard";
+		const url = baseUrl.questionBase + "/get-questions-by-flashcard";
 		return axiosClient.post(
 			url,
 			{ params },
@@ -31,7 +30,7 @@ const questionAPI = {
 	},
 
 	removeQuestionById: (params) => {
-		const url = baseUrl + "/delete";
+		const url = baseUrl.questionBase + "/delete";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -45,7 +44,7 @@ const questionAPI = {
 	},
 
 	getQuestionByListLessionId: (params) => {
-		const url = baseUrl + "/arr-lessionid";
+		const url = baseUrl.questionBase + "/arr-lessionid";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
