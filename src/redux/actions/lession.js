@@ -4,4 +4,9 @@ export const saveListLessionFoundBySubjectId = (payload) => {
         payload: payload,
     };
 };
-
+export const saveTouchedLession = (payload) => {
+    return {
+        type: "SAVE_LESSION_TOUCHED",
+        payload: payload,
+    };
+};

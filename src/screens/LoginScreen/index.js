@@ -105,7 +105,7 @@ const SignInScreen = ({ navigation }) => {
     }
 
     const loginHandle = async (email, password) => {
-        dispatch(changeLoadingState(true))
+        // dispatch(changeLoadingState(true))
         console.log(email, password)
         const response = await authAPI.login({ email: email, password: password })
         if (response.status === "Success") {
@@ -115,14 +115,17 @@ const SignInScreen = ({ navigation }) => {
                 refreshToken: response.refreshToken,
                 expirationTime: response.expirationTime,
             }));
-            setTimeout(() => {
-                dispatch(changeLoadingState(false))
-                navigation.navigate("Home");
-            }, 1000);
+            Alert.alert('Notification', `Login successfully`, [
+                { text: 'OK' }
+            ]);
+
+            // dispatch(changeLoadingState(false))
+            navigation.navigate("Home");
             // navigate here
         } else {
-            dispatch(changeLoadingState(false))
-            console.log(response);
+            // dispatch(changeLoadingState(false))
+          //  dispatch(changeLoadingState(false))
+           // console.log(response);
             Alert.alert('Notification', `${response.Message}`, [
                 { text: 'Try again' }
             ]);

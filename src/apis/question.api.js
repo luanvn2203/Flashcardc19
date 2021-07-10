@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://localhost:9191/question";
+const baseUrl = "http://192.168.1.19:9191/question";
 
 const questionAPI = {
 	addQuestionOption: (params) => {
@@ -17,9 +17,8 @@ const questionAPI = {
 		);
 	},
 
-	getQuestionByFlashcardId: (params) => {
+	getQuestionByFlashcardId: (params, token) => {
 		const url = baseUrl + "/get-questions-by-flashcard";
-		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
 			{ params },

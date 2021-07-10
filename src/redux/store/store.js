@@ -7,6 +7,7 @@ import booksReducer from '../reducers/bookReducer';
 import authReducer from '../reducers/authReducer';
 import subjectReducer from '../reducers/subject';
 import lessionReducer from '../reducers/lession'
+import flashcardReducer from '../reducers/flashcardReducer'
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     booksReducer: persistReducer(persistConfig, booksReducer),
     authReducer: persistReducer(persistConfig, authReducer),
     subjectReducer: persistReducer(persistConfig, subjectReducer),
-    lessionReducer: persistReducer(persistConfig, lessionReducer)
+    lessionReducer: persistReducer(persistConfig, lessionReducer),
+    flashcardReducer: persistReducer(persistConfig, flashcardReducer)
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
