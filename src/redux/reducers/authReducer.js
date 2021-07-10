@@ -14,6 +14,8 @@ function authReducer(state = initialState, action) {
                 accessToken: action.payload.accessToken,
                 refreshToken: action.payload.refreshToken,
                 expirationTime: action.payload.expirationTime,
+                currentUser: action.payload.currentUser
+
             };
         case 'CHANGE_LOADING_STATE':
             return {

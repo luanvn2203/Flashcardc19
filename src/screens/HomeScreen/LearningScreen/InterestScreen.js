@@ -11,29 +11,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 const InterestScreen = ({ navigation }) => {
-    const getData = async () => {
-        setIsLoading(true)
-        if (currentUser != null) {
-            const interestTopic = JSON.parse(currentUser.interestTopic)
-            const data = await subjectAPI.getInterestSubject({ listTopicId: interestTopic }, accessToken);
-            if (data.listData) {
-                dispatch(saveListSubjectInterest(data.listData))
-                setIsLoading(false)
-            }
-        }
 
-    }
-    useEffect(() => {
 
-        getData();
-    }, [])
     const { accessToken } = useSelector(state => state.authReducer);
     const { currentUser } = useSelector(state => state.authReducer);
     const { listSubjectInterest } = useSelector(state => state.subjectReducer);
 
-    const [isLoading, setIsLoading] = useState(true)
-
+    useEffect(() => {
+        const getData = async () => {
+            if (currentUser != null) {
+                const interestTopic = JSON.parse(currentUser.interestTopic)
+                const data = await subjectAPI.getInterestSubject({ listTopicId: interestTopic }, accessToken);
+                if (data.listData) {
+                    dispatch(saveListSubjectInterest(data.listData))
+                }
+            }
+        }
+        getData();
+    }, [currentUser])
     const dispatch = useDispatch()
+
 
 
     const renderItem = ({ item }) => {
@@ -84,11 +81,12 @@ const InterestScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {/* {isLoading ? <Text>Loading. . .</Text> : */}
-            <FlatList
+            {listSubjectInterest && <FlatList
                 data={listSubjectInterest}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-            />
+            />}
+
             {/* } */}
         </SafeAreaView>
     );

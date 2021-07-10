@@ -81,6 +81,18 @@ const subjectAPI = {
 			}
 		);
 	},
+	searchSubjectByNameAndDes: (params, token) => {
+		const url = baseUrl.subjectBase + "/find-name-des";
+		return axiosClient.post(
+			url,
+			{ params },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+	},
 };
 
 export default subjectAPI;
