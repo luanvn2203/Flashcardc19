@@ -1,11 +1,10 @@
 import axiosClient from "./axiosClient";
+import { baseUrl } from '../../config'
 
-const baseUrl = "http://192.168.1.72:9191/subject";
 
 const subjectAPI = {
 	getInterestSubject: (params, token) => {
-		const url = baseUrl + "/for-home-interest";
-		console.log(params)
+		const url = baseUrl.subjectBase + "/for-home-interest";
 		return axiosClient.post(
 			url,
 			{ params },
@@ -18,7 +17,7 @@ const subjectAPI = {
 	},
 
 	getSubjectByMe: () => {
-		const url = baseUrl + "/subject-by-signin-mail";
+		const url = baseUrl.subjectBase + "/subject-by-signin-mail";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.get(url, {
 			headers: {
@@ -28,7 +27,7 @@ const subjectAPI = {
 	},
 
 	addSubjectByTopicId: (params) => {
-		const url = baseUrl + "/create";
+		const url = baseUrl.subjectBase + "/create";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -42,7 +41,7 @@ const subjectAPI = {
 	},
 
 	getSubjectByTopicId: (params) => {
-		const url = baseUrl + "/create";
+		const url = baseUrl.subjectBase + "/create";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -56,7 +55,7 @@ const subjectAPI = {
 	},
 
 	removeSubjectById: (params) => {
-		const url = baseUrl + "/delete";
+		const url = baseUrl.subjectBase + "/delete";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -70,7 +69,7 @@ const subjectAPI = {
 	},
 
 	updateSubjectById: (params) => {
-		const url = baseUrl + "/update";
+		const url = baseUrl.subjectBase + "/update";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.put(
 			url,

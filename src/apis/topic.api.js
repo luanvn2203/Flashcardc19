@@ -1,15 +1,15 @@
 import axiosClient from "./axiosClient";
+import { baseUrl } from '../../config'
 
-const baseUrl = "http://192.168.1.72:9191/topic";
 
 const topicAPI = {
 	getAllTopic: () => {
-		const url = baseUrl + "/all";
+		const url = baseUrl.topicBase + "/all";
 		return axiosClient.get(url, {});
 	},
 
 	getTopicByMe: () => {
-		const url = baseUrl + "/find-by-email";
+		const url = baseUrl.topicBase + "/find-by-email";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.get(url, {
 			headers: {
@@ -19,7 +19,7 @@ const topicAPI = {
 	},
 
 	addNewTopic: (params) => {
-		const url = baseUrl + "/create";
+		const url = baseUrl.topicBase + "/create";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -33,7 +33,7 @@ const topicAPI = {
 	},
 
 	removeTopicById: (params) => {
-		const url = baseUrl + "/delete";
+		const url = baseUrl.topicBase + "/delete";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
@@ -47,7 +47,7 @@ const topicAPI = {
 	},
 
 	updateTopicById: (params) => {
-		const url = baseUrl + "/delete";
+		const url = baseUrl.topicBase + "/delete";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,

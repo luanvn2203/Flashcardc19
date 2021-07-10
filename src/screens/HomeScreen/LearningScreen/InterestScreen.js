@@ -18,7 +18,6 @@ const InterestScreen = ({ navigation }) => {
             const data = await subjectAPI.getInterestSubject({ listTopicId: interestTopic }, accessToken);
             if (data.listData) {
                 dispatch(saveListSubjectInterest(data.listData))
-                console.log(data);
                 setIsLoading(false)
             }
         }

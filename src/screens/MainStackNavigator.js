@@ -22,18 +22,18 @@ function MainStackNavigator(props) {
 
     return (
         <NavigationContainer>
-            {isLoading ?
+            {/* {isLoading ?
                 <StackScreen.Navigator screenOptions={{ headerShown: false }} initialRouteName='Loading'>
                     <StackScreen.Screen name="Loading" component={LoadingScreen} />
                 </StackScreen.Navigator>
-                :
-                <StackScreen.Navigator screenOptions={{ headerShown: false }} initialRouteName={accessToken != null ? 'Home' : 'SignIn'}>
-                    <StackScreen.Screen name="SignIn" component={SignInScreen} />
-                    <StackScreen.Screen name="Home" component={HomeScreen} />
-                    <StackScreen.Screen name="Register" component={RegisterScreen} />
-                    <StackScreen.Screen name="Loading" component={LoadingScreen} />
-                </StackScreen.Navigator>
-            }
+                : */}
+            <StackScreen.Navigator screenOptions={{ headerShown: false }} initialRouteName={accessToken != null ? 'Home' : 'SignIn'}>
+                <StackScreen.Screen name="SignIn" component={SignInScreen} />
+                <StackScreen.Screen name="Home" component={HomeScreen} />
+                <StackScreen.Screen name="Register" component={RegisterScreen} />
+                <StackScreen.Screen name="Loading" component={LoadingScreen} />
+            </StackScreen.Navigator>
+            {/* } */}
 
         </NavigationContainer>
 

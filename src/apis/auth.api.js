@@ -1,16 +1,16 @@
 import { useSelector } from "react-redux";
 import axiosClient from "./axiosClient";
+import { baseUrl } from '../../config'
 
-const baseUrl = 'http://192.168.1.72:9195/account';
 
 const authAPI = {
 	login: (params) => {
-		const url = baseUrl + "/login";
+		const url = baseUrl.authBase + "/login";
 		return axiosClient.post(url, { params });
 	},
 
 	getMe: (token) => {
-		const url = baseUrl + "/me";
+		const url = baseUrl.authBase + "/me";
 		return axiosClient.get(url, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -19,7 +19,7 @@ const authAPI = {
 	},
 
 	logout: (token) => {
-		const url = baseUrl + "/logout";
+		const url = baseUrl.authBase + "/logout";
 		// const token = localStorage.getItem("accessToken");
 		return axiosClient.delete(url, {
 			headers: {
@@ -29,12 +29,12 @@ const authAPI = {
 	},
 
 	register: (params) => {
-		const url = baseUrl + "/register";
+		const url = baseUrl.authBase + "/register";
 		return axiosClient.post(url, { params });
 	},
 
 	updateProfile: (params) => {
-		const url = baseUrl + "/update";
+		const url = baseUrl.authBase + "/update";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.put(
 			url,
@@ -48,7 +48,7 @@ const authAPI = {
 	},
 
 	editPassword: (params) => {
-		const url = baseUrl + "/change-password";
+		const url = baseUrl.authBase + "/change-password";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.put(
 			url,
@@ -62,7 +62,7 @@ const authAPI = {
 	},
 
 	refreshToken: () => {
-		const url = baseUrl + "/token";
+		const url = baseUrl.authBase + "/token";
 		const token = localStorage.getItem("accessToken");
 		const refreshToken = localStorage.getItem("refreshToken");
 		return axiosClient.post(
@@ -77,7 +77,7 @@ const authAPI = {
 	},
 
 	updateHobbyTopic: (params) => {
-		const url = baseUrl + "/update-interest";
+		const url = baseUrl.authBase + "/update-interest";
 		const token = localStorage.getItem("accessToken");
 		return axiosClient.put(
 			url,

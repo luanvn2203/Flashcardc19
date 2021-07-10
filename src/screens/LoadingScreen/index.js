@@ -9,7 +9,6 @@ import {
 LoadingScreen.propTypes = {
 
 };
-console.log("loading call")
 function LoadingScreen(props) {
     return (
         <View style={styles.container} >
