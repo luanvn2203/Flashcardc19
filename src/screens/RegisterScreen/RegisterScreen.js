@@ -20,13 +20,12 @@ import { Picker } from '@react-native-picker/picker';
 
 import * as Animatable from 'react-native-animatable';
 
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { RadioButton } from 'react-native-paper';
 import topicAPI from '../../apis/topic.api';
@@ -60,7 +59,7 @@ const RegisterScreen = ({ navigation }) => {
                 items[0].children.push(item);
             }
             setListTopic(items);
-            console.log(items);
+            // console.log(items);
         }
     }
 
@@ -80,13 +79,17 @@ const RegisterScreen = ({ navigation }) => {
         dob: '',
         interestTopic: [''],
         check_handleEmailChange: false,
-        secureTextEntry: true,
+        secureTextEntry: false,
         isValidUser: true,
         isValidPassword: true,
         isValidFullname: true,
         isValidPhone: false,
         emailOK: false,
         passwordOK: false,
+        fullnameOK: false,
+        phoneOK: false,
+        addressOK: false,
+        dobOK: false,
     });
 
     const handleEmailChange = (val) => {
@@ -94,13 +97,15 @@ const RegisterScreen = ({ navigation }) => {
             setData({
                 ...data,
                 email: val,
-                check_handleEmailChange: true
+                check_handleEmailChange: true,
+                isValidUser: true
             });
         } else {
             setData({
                 ...data,
                 email: val,
-                check_handleEmailChange: false
+                check_handleEmailChange: false,
+                isValidUser: false
             });
         }
     }
@@ -124,17 +129,19 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     const handleFullnameChange = (val) => {
-        if (val.trim().length >= 0) {
+        if (val.trim().length > 0) {
             setData({
                 ...data,
                 fullname: val,
                 isValidFullname: true,
+                fullnameOK: true,
             });
         } else {
             setData({
                 ...data,
                 fullname: val,
                 isValidFullname: false,
+                fullnameOK: false
             });
         }
     }
@@ -145,21 +152,32 @@ const RegisterScreen = ({ navigation }) => {
                 ...data,
                 phone: val,
                 isValidPhone: true,
+                phoneOK: true
             });
         } else {
             setData({
                 ...data,
                 phone: val,
                 isValidPhone: false,
+                phoneOK: false
             });
         }
     }
 
     const handleAddressChange = (val) => {
-        setData({
-            ...data,
-            address: val,
-        });
+        if (val.trim().length > 0) {
+            setData({
+                ...data,
+                address: val,
+                addressOK: true
+            });
+        } else {
+            setData({
+                ...data,
+                address: val,
+                addressOK: false
+            });
+        }
     }
 
     const updateSecuteTextEntry = () => {
@@ -186,7 +204,7 @@ const RegisterScreen = ({ navigation }) => {
     // const [selectedRole, setSelectedRole] = useState("student");
 
     const handleRoleChange = (val) => {
-        console.log("roleeee: " + val)
+        // console.log("roleeee: " + val)
         setData({
             ...data,
             role: val,
@@ -201,11 +219,49 @@ const RegisterScreen = ({ navigation }) => {
         // })
     }
 
-    console.log(listTopic);
+    const handleValidUser = (val) => {
+        if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val)) {
+            setData({
+                ...data,
+                isValidUser: true,
+                emailOK: true
+            });
+        } else {
+            setData({
+                ...data,
+                isValidUser: false,
+                emailOK: false
+
+            });
+        }
+    }
+
+    // console.log(listTopic);
+
+    const today = new Date();
+    const [date, setDate] = useState(today);
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        // console.log(selectedDate);
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    };
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    };
+
+    const showDatepicker = () => {
+        showMode('date');
+    };
 
     const handleSubmit = async () => {
-        console.log(data);
-        console.log(interestTopicThis)
+        // console.log(data);
+        // console.log(interestTopicThis)
         const response = await authAPI.register({
             email: data.email,
             password: data.password,
@@ -213,7 +269,7 @@ const RegisterScreen = ({ navigation }) => {
             roleId: data.role,
             phone: data.phone,
             address: data.address,
-            DOB: data.dob,
+            DOB: `${date.toISOString()}`.slice(0, 10),
             gender: data.gender,
             interestTopic: interestTopicThis
         })
@@ -234,6 +290,10 @@ const RegisterScreen = ({ navigation }) => {
         }
     }
 
+    // console.log(`${date.getFullYear()}-${date.get}-${date.getDay()}`);
+    // console.log(date);
+    // console.log(`${date.toISOString()}`.slice(0, 10));
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#009387' barStyle="light-content" />
@@ -246,13 +306,18 @@ const RegisterScreen = ({ navigation }) => {
                 style={styles.footer}
             >
                 <View style={{ alignItems: 'center' }}>
-                    <ScrollView>
+                    <ScrollView style={styles.scrollview}>
                         {/* Email here */}
                         <Text style={styles.text_footer}>Email</Text>
                         <View style={styles.action}>
-                            <FontAwesome
-                                name="user-o"
+                            {/* <FontAwesome
+                                name="envelope"
                                 color="#05375a"
+                                size={20}
+                            /> */}
+                            <Feather
+                                name="mail"
+                                // color={colors.text}
                                 size={20}
                             />
                             <TextInput
@@ -261,8 +326,9 @@ const RegisterScreen = ({ navigation }) => {
                                 style={styles.textInput}
                                 autoCapitalize="none"
                                 onChangeText={(val) => handleEmailChange(val)}
+                                onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
                             />
-                            {data.check_textInputChange ?
+                            {/* {data.check_handleEmailChange ?
                                 <Animatable.View
                                     animation="bounceIn"
                                 >
@@ -272,8 +338,13 @@ const RegisterScreen = ({ navigation }) => {
                                         size={20}
                                     />
                                 </Animatable.View>
-                                : null}
+                                : null} */}
                         </View>
+                        {data.isValidUser ? null :
+                            <Animatable.View animation="fadeInLeft" duration={500}>
+                                <Text style={styles.errorMsg}>Email is incorrect</Text>
+                            </Animatable.View>
+                        }
                         {/* Password here */}
                         <Text style={[styles.text_footer, {
                             // color: colors.text,
@@ -295,7 +366,7 @@ const RegisterScreen = ({ navigation }) => {
                                 autoCapitalize="none"
                                 onChangeText={(val) => handlePasswordChange(val)}
                             />
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 onPress={updateSecuteTextEntry}
                             >
                                 {data.secureTextEntry ?
@@ -311,11 +382,16 @@ const RegisterScreen = ({ navigation }) => {
                                         size={20}
                                     />
                                 }
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         {/* Fullname here */}
                         <Text style={[styles.text_footer, { marginTop: 10 }]}>Fullname</Text>
                         <View style={styles.action}>
+                            <FontAwesome
+                                name="user-o"
+                                color="#05375a"
+                                size={20}
+                            />
                             <TextInput
                                 placeholder="Your Fullname"
                                 // keyboardType='email-address'
@@ -327,6 +403,11 @@ const RegisterScreen = ({ navigation }) => {
                         {/* Phone Here */}
                         <Text style={[styles.text_footer, { marginTop: 10 }]}>Phone</Text>
                         <View style={styles.action}>
+                            <Feather
+                                name="phone"
+                                // color={colors.text}
+                                size={20}
+                            />
                             <TextInput
                                 placeholder="Your Phone Number"
                                 keyboardType='numeric'
@@ -338,7 +419,11 @@ const RegisterScreen = ({ navigation }) => {
                         {/* Address here */}
                         <Text style={[styles.text_footer, { marginTop: 10 }]}>Address</Text>
                         <View style={styles.action}>
-
+                            <Feather
+                                name="map-pin"
+                                // color={colors.text}
+                                size={20}
+                            />
                             <TextInput
                                 placeholder="Your Address"
                                 style={styles.textInput}
@@ -347,7 +432,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
                         </View>
                         {/* Dob here */}
-                        <Text style={[styles.text_footer, { marginTop: 10 }]}>DOB</Text>
+                        {/* <Text style={[styles.text_footer, { marginTop: 10 }]}>DOB</Text>
                         <View style={styles.action}>
                             <TextInput
                                 placeholder="Your dob"
@@ -355,7 +440,25 @@ const RegisterScreen = ({ navigation }) => {
                                 autoCapitalize="none"
                                 onChangeText={(val) => handleDOBChange(val)}
                             />
+                        </View> */}
+
+                        <View>
+                            <Text style={[styles.text_footer, { marginTop: 10 }]}>Date Of Birth</Text>
+                            <View>
+                                <Button onPress={showDatepicker} title="Pick your DOB" />
+                            </View>
+                            {show && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    mode={mode}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={onChange}
+                                />
+                            )}
                         </View>
+
                         {/* ///////// */}
                         {/* Gender here */}
                         <View style={{ flexDirection: 'row', alignContent: 'center' }} >
@@ -413,7 +516,7 @@ const RegisterScreen = ({ navigation }) => {
                         {/* Button action */}
                         <TouchableOpacity
                             // onPress={() => { loginHandle(data.username, data.password) }}
-                            // disabled={!data.emailOK && !data.passwordOK}
+                            disabled={!data.emailOK || !data.passwordOK || !data.fullnameOK || !data.phoneOK || !data.addressOK}
                             // onPress={() => navigation.navigate("SignIn")}
                             style={[styles.signIn, {
                                 borderColor: '#009387',
@@ -452,6 +555,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#009387'
+    },
+    scrollview: {
+        width: '100%'
     },
     header: {
         flex: 1,
@@ -504,5 +610,9 @@ const styles = StyleSheet.create({
     textSign: {
         fontSize: 18,
         fontWeight: 'bold'
+    },
+    errorMsg: {
+        color: '#FF0000',
+        fontSize: 14,
     },
 });
