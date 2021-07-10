@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://localhost:9191/flashcard";
+const baseUrl = "http://192.168.1.19:9191/flashcard";
 
 const flashcardAPI = {
 	getFlashcardByLessionId: (params) => {
@@ -17,9 +17,8 @@ const flashcardAPI = {
 		);
 	},
 
-	getPulblicFlashcardByLessionId: (params) => {
+	getPulblicFlashcardByLessionId: (params, token) => {
 		const url = baseUrl + "/public-flashcard-by-lessionid";
-		const token = localStorage.getItem("accessToken");
 		return axiosClient.post(
 			url,
 			{ params },

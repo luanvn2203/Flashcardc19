@@ -11,91 +11,88 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import lessionAPI from '../../../apis/lession.api'
 import { saveListLessionFoundBySubjectId, saveTouchedLession } from '../../../redux/actions/lession';
 import { Ionicons } from '@expo/vector-icons';
+import flashcardAPI from '../../../apis/flashcard.api';
+import { saveTouchedFlashcard } from '../../../redux/actions/flashcard';
 
-const LessionScreen = ({ navigation }) => {
+
+const FlashcardScreen = ({ navigation }) => {
+
     const { touchedSubject } = useSelector(state => state.subjectReducer);
     const { accessToken } = useSelector(state => state.authReducer);
-    // const { listLessionBySubjectId } = useSelector(state => state.lessionReducer);
+    const { lessionTouched } = useSelector(state => state.lessionReducer);
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [listFlashcardFound, setListFlashcardFound] = useState(null)
     const [resMessage, setResMessage] = useState('')
+
     const dispatch = useDispatch();
 
-    const [listLessionBySubjectId, setListLessionBySubjectId] = useState(null);
-    useEffect(() => {
-        const getPublicLession = async () => {
-            // setIsLoading(true)
-            const response = await lessionAPI.getPublicLessionBySubId({
-                subjectId: touchedSubject.subjectId
-            }, accessToken)
-            if (response.status === "Success") {
-                // dispatch(saveListLessionFoundBySubjectId(response.lession))
-                // setIsLoading(false)
-                setListLessionBySubjectId(response.lession)
-            } else {
-                // setIsLoading(false)
-                // if (listLessionBySubjectId.length > 0) {
-                //     // dispatch(saveListLessionFoundBySubjectId(null))
-                // }
-                setResMessage(response.message)
-            }
+    const getListPublicFlashcardByLessionId = async () => {
+        const response = await flashcardAPI.getPulblicFlashcardByLessionId({
+            lessionId: lessionTouched.lessionId
+        }, accessToken)
+        if (response.status === "Success") {
+            setListFlashcardFound(response.flashcard)
+        } else {
+            setResMessage(response.message)
         }
-        getPublicLession();
+    }
+    useEffect(() => {
+        getListPublicFlashcardByLessionId();
     }, [])
+
     const renderItem = ({ item }) => {
         return (
             <WingBlank size='sm' style={styles.container}>
                 <Text></Text>
                 <TouchableOpacity
                     onPress={(e) => {
-                        dispatch(saveTouchedLession(item))
-                        navigation.navigate("Flashcard")
+                        dispatch(saveTouchedFlashcard(item))
+                        navigation.navigate("Question")
                     }}
                 >
                     <Card style={styles.card} >
                         <Card.Header
-                            title={item.lessionName}
+                            title={item.flashcardName}
                             thumbStyle={{ width: 30, height: 30 }}
                             // thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
                             extra={<Text style={styles.author}>
                                 <Ionicons
                                     name="pricetag-sharp"
-                                />{"Lession"}</Text>}
+                                />{"Flashcard"}</Text>}
                         />
                         <Card.Body>
                             <View style={{ minHeight: 20 }}>
-                                <Text style={{ marginLeft: 16 }}>{item.lessionDescription}</Text>
+                                {/* <Text style={{ marginLeft: 16 }}>{item.dateOfCreate.slice(0,10)}</Text> */}
                                 <Text style={{ marginLeft: 16, color: 'blue' }}>{item.author}</Text>
 
                             </View>
                         </Card.Body>
                         <Card.Footer
                             content='Public'
-                            extra={item.createdDate.slice(0, 10)}
+                            extra={item.dateOfCreate.slice(0, 10)}
                         />
                     </Card>
                 </TouchableOpacity>
             </WingBlank>
         )
     }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.subjectTitle} >#{touchedSubject.subjectName}</Text>
-            {listLessionBySubjectId !== null ? <FlatList
-                data={listLessionBySubjectId}
+            <Text style={styles.subjectTitle} >#{lessionTouched.lessionName}</Text>
+            {listFlashcardFound !== null ? <FlatList
+                data={listFlashcardFound}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
             /> : <WingBlank style={styles.container}>
                 <Text style={{ fontSize: 30, textAlign: 'center' }}>EMPTY CONTENT</Text>
                 <Text style={styles.resMessage}>{resMessage}</Text>
             </WingBlank>}
-
         </SafeAreaView>
     );
 }
 
-export default LessionScreen;
-
+export default FlashcardScreen;
 
 const styles = StyleSheet.create({
     container: {

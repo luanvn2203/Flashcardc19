@@ -83,12 +83,13 @@ const InterestScreen = ({ navigation }) => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            {isLoading ? <Text>Loading. . .</Text> :
-                <FlatList
-                    data={listSubjectInterest}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                />}
+            {/* {isLoading ? <Text>Loading. . .</Text> : */}
+            <FlatList
+                data={listSubjectInterest}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+            />
+            {/* } */}
         </SafeAreaView>
     );
 }

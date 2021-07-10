@@ -141,6 +141,7 @@ const HomeScreen = ({ navigation }) => {
                 activeTintColor: 'tomato',
                 inactiveTintColor: 'gray',
             }}
+            initialRouteName="Learning"
         >
             <Tab.Screen name="Learning" component={LearningScreen} />
             <Tab.Screen name="Search" component={SearchScreen} />

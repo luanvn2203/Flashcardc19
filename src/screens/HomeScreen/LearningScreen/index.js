@@ -11,6 +11,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import InterestScreen from './InterestScreen'
 import LessionScreen from './LessionScreen'
+import FlashcardScreen from './FlashcardScreen';
+import QuestionScreen from './QuestionScreen'
 
 LearningScreen.propTypes = {
 
@@ -64,20 +66,7 @@ function LearningScreen({ navigation }) {
 
 
 
-    const FlashcardScreen = ({ navigation }) => {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>FlashcardScreen</Text>
-            </View>
-        );
-    }
-    const QuestionScreen = ({ navigation }) => {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>QuestionScreen</Text>
-            </View>
-        );
-    }
+
 
     const HomeScreenStack = createStackNavigator();
     return (
