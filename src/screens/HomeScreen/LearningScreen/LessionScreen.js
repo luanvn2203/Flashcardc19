@@ -41,7 +41,7 @@ const LessionScreen = ({ navigation }) => {
             }
         }
         getPublicLession();
-    }, [])
+    }, [touchedSubject])
     const renderItem = ({ item }) => {
         return (
             <WingBlank size='sm' style={styles.container}>

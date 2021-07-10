@@ -39,7 +39,7 @@ const QuestionScreen = ({ navigation }) => {
     }
     useEffect(() => {
         getQuestionByFlashcardId();
-    }, [])
+    }, [flashcardTouched])
     const renderOptionItem = ({ item, index }) => {
         return (
             <WingBlank size='sm'>
