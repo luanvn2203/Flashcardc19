@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import axiosClient from "./axiosClient";
 
-const baseUrl = 'http://192.168.1.19:9195/account';
+const baseUrl = 'http://192.168.1.72:9195/account';
 
 const authAPI = {
 	login: (params) => {

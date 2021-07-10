@@ -109,7 +109,7 @@ const SignInScreen = ({ navigation }) => {
         console.log(email, password)
         const response = await authAPI.login({ email: email, password: password })
         if (response.status === "Success") {
-
+            console.log(response);
             dispatch(saveAccessToken({
                 accessToken: response.tokens,
                 refreshToken: response.refreshToken,
@@ -124,6 +124,8 @@ const SignInScreen = ({ navigation }) => {
             // navigate here
         } else {
             // dispatch(changeLoadingState(false))
+          //  dispatch(changeLoadingState(false))
+           // console.log(response);
             Alert.alert('Notification', `${response.Message}`, [
                 { text: 'Try again' }
             ]);

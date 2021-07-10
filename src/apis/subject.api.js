@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const baseUrl = "http://192.168.1.19:9191/subject";
+const baseUrl = "http://192.168.1.72:9191/subject";
 
 const subjectAPI = {
 	getInterestSubject: (params, token) => {
