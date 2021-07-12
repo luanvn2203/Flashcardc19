@@ -10,11 +10,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import LogoutButton from '../../components/LogoutButton';
-import authAPI from '../../apis/auth.api'
-import LearningScreen from './LearningScreen/index'
+import authAPI from '../../apis/auth.api';
+import LearningScreen from './LearningScreen/index';
+// import SettingScreen from './SettingsScreen/index';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { changeLoadingState, saveAccessToken, saveSignedInUser } from '../../redux/actions/auth';
+import SettingsScreen from './SettingScreen';
 
 
 const HomeScreen = ({ navigation }) => {
@@ -60,19 +62,6 @@ const HomeScreen = ({ navigation }) => {
 
     }
 
-    function SettingsScreen({ navigation }) {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Settings screen</Text>
-                {/* <Button
-                    title="Go to Details"
-                    onPress={() => navigation.navigate('Details')}
-                /> */}
-                <LogoutButton handleLogoutClick={handleLogoutClick} />
-
-            </View>
-        );
-    }
     function SearchScreen({ navigation }) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
