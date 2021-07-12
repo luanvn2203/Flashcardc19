@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from 'react-native-paper';
 
 import authAPI from '../../apis/auth.api'
-import { changeLoadingState, saveAccessToken } from '../../redux/actions/auth'
+import { changeLoadingState, saveAccessToken, saveSignedInUser } from '../../redux/actions/auth'
 
 import { useDispatch, useSelector } from 'react-redux';
 // import { AuthContext } from '../components/context';
@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const SignInScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const { isLoading } = useSelector(state => state.authReducer);
+    const { currentUser } = useSelector(state => state.authReducer);
 
 
     const [data, setData] = React.useState({
@@ -103,19 +104,21 @@ const SignInScreen = ({ navigation }) => {
             });
         }
     }
+    const getMyInfor = async () => {
 
+    }
     const loginHandle = async (email, password) => {
         // dispatch(changeLoadingState(true))
         const response = await authAPI.login({ email: email, password: password })
         if (response.status === "Success") {
+
             dispatch(saveAccessToken({
                 accessToken: response.tokens,
                 refreshToken: response.refreshToken,
                 expirationTime: response.expirationTime,
             }));
-            Alert.alert('Notification', `Login successfully`, [
-                { text: 'OK' }
-            ]);
+            const myInfo = await authAPI.getMe(response.tokens);
+            dispatch(saveSignedInUser(myInfo.account))
 
             // dispatch(changeLoadingState(false))
             navigation.navigate("Home");
@@ -130,6 +133,7 @@ const SignInScreen = ({ navigation }) => {
         }
 
     }
+
 
     return (
         <View style={styles.container}>

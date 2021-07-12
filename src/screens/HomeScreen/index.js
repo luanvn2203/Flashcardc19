@@ -13,7 +13,7 @@ import LogoutButton from '../../components/LogoutButton';
 import authAPI from '../../apis/auth.api';
 import LearningScreen from './LearningScreen/index';
 // import SettingScreen from './SettingsScreen/index';
-
+import SearchScreen from './SearchScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeLoadingState, saveAccessToken, saveSignedInUser } from '../../redux/actions/auth';
 import SettingsScreen from './SettingScreen';
@@ -24,39 +24,38 @@ const HomeScreen = ({ navigation }) => {
     const { accessToken } = useSelector(state => state.authReducer);
     const { currentUser } = useSelector(state => state.authReducer);
 
-    const getMyInfor = async () => {
-        const myInfo = await authAPI.getMe(accessToken);
-        dispatch(saveSignedInUser(myInfo.account))
-    }
-    useEffect(() => {
-        getMyInfor();
-    }, [])
+
     const handleLogoutClick = async () => {
         // dispatch(changeLoadingState(true))
-
-        authAPI.logout(accessToken).then(res => {
-            dispatch(saveAccessToken({
-                accessToken: null,
-                refreshToken: null,
-                expirationTime: null,
-                currentUser: null
-            }));
-            setTimeout(() => {
-                dispatch(changeLoadingState(false))
-                navigation.navigate("SignIn");
-            }, 1000);
-        }).catch(err => {
-            dispatch(saveAccessToken({
-                accessToken: null,
-                refreshToken: null,
-                expirationTime: null,
-                currentUser: null
-            }));
-            setTimeout(() => {
-                dispatch(changeLoadingState(false))
-                navigation.navigate("SignIn");
-            }, 1000);
-        })
+        dispatch(saveAccessToken({
+            accessToken: null,
+            refreshToken: null,
+            expirationTime: null,
+            currentUser: null
+        }));
+        // authAPI.logout(accessToken).then(res => {
+        //     dispatch(saveAccessToken({
+        //         accessToken: null,
+        //         refreshToken: null,
+        //         expirationTime: null,
+        //         currentUser: null
+        //     }));
+        setTimeout(() => {
+            dispatch(changeLoadingState(false))
+            navigation.navigate("SignIn");
+        }, 1000);
+        // }).catch(err => {
+        //     dispatch(saveAccessToken({
+        //         accessToken: null,
+        //         refreshToken: null,
+        //         expirationTime: null,
+        //         currentUser: null
+        //     }));
+        //     setTimeout(() => {
+        //         dispatch(changeLoadingState(false))
+        //         navigation.navigate("SignIn");
+        //     }, 1000);
+        // })
 
 
 
@@ -66,6 +65,10 @@ const HomeScreen = ({ navigation }) => {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text>Search screen</Text>
+    function SettingsScreen({ navigation }) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Settings screen</Text>
                 {/* <Button
                     title="Go to Details"
                     onPress={() => navigation.navigate('Details')}
@@ -75,6 +78,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         );
     }
+
     function LearningProcessScreen({ navigation }) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -131,6 +135,7 @@ const HomeScreen = ({ navigation }) => {
                 inactiveTintColor: 'gray',
             }}
             initialRouteName="Learning"
+
         >
             <Tab.Screen name="Learning" component={LearningScreen} />
             <Tab.Screen name="Search" component={SearchScreen} />

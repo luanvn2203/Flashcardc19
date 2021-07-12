@@ -38,7 +38,7 @@ const FlashcardScreen = ({ navigation }) => {
     }
     useEffect(() => {
         getListPublicFlashcardByLessionId();
-    }, [])
+    }, [lessionTouched])
 
     const renderItem = ({ item }) => {
         return (
