@@ -65,14 +65,7 @@ const HomeScreen = ({ navigation }) => {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text>Search screen</Text>
-    function SettingsScreen({ navigation }) {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Settings screen</Text>
-                {/* <Button
-                    title="Go to Details"
-                    onPress={() => navigation.navigate('Details')}
-                /> */}
+   
                 <LogoutButton handleLogoutClick={handleLogoutClick} />
 
             </View>
